@@ -15,6 +15,9 @@ before_script:
 - JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 4>&1 | grep -q "Ready=True"; do sleep 1; done
 script:
 - make build
+- cd ../../
+- mkdir wongma7
+- cd wongma7
 - git clone https://github.com/wongma7/csi-certify.git
 - cd csi-certify
 - git checkout refactor
