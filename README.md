@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/mathu97/csi-driver-nfs.svg?branch=master)](https://travis-ci.org/mathu97/csi-driver-nfs)
 # CSI NFS driver
 
 ## Kubernetes
