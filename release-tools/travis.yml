@@ -2,13 +2,16 @@ language: go
 sudo: required
 services:
   - docker
-matrix:
-  include:
-  - go: 1.11.1
+before_script:
+# Download kubeadm-dind-cluster script and give it executable permissions.
+- wget https://github.com/kubernetes-sigs/kubeadm-dind-cluster/releases/download/v0.1.0/dind-cluster-v1.13.sh
+- chmod +x dind-cluster-v1.13.sh
+# Start Kubernetes cluster.
+- export NUM_NODES=0
+- ./dind-cluster-v1.13.sh up
+# Add Kubectl directory to the PATH.
+- export PATH="$HOME/.kubeadm-dind-cluster:$PATH"
+# Wait for Kubernetes to be up and ready.
+- JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 3>&1 | grep -q "Ready=True"; do sleep 1; done
 script:
 - make -k all test
-after_success:
-  - if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then
-      docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" quay.io;
-      make push;
-    fi
