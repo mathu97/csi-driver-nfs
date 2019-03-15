@@ -15,4 +15,7 @@
 CMDS=nfsplugin
 all: build
 
-include release-tools/build.make
+#include release-tools/build.makei
+build:
+	if [ ! -d ./vendor ]; then dep ensure -vendor-only; fi
+	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o ./bin/nfsplugin ./cmd/nfsplugin
