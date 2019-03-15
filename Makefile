@@ -19,3 +19,4 @@ all: build
 build:
 	if [ ! -d ./vendor ]; then dep ensure -vendor-only; fi
 	CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o ./bin/nfsplugin ./cmd/nfsplugin
+	docker build -t quay.io/mathu97/nfsplugin:v1.0.0 .
