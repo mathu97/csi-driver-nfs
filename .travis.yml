@@ -3,22 +3,23 @@ sudo: required
 services:
   - docker
 before_script:
-# Download kubeadm-dind-cluster script and give it executable permissions.
-- wget https://github.com/kubernetes-sigs/kubeadm-dind-cluster/releases/download/v0.1.0/dind-cluster-v1.13.sh
-- chmod +x dind-cluster-v1.13.sh
-# Start Kubernetes cluster.
-- export NUM_NODES=0
-- ./dind-cluster-v1.13.sh up
-# Add Kubectl directory to the PATH.
-- export PATH="$HOME/.kubeadm-dind-cluster:$PATH"
+# Setup cluster with local-up-cluster.sh
+- curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+- chmod +x ./kubectl
+- sudo mv ./kubectl /usr/local/bin/kubectl
+- export KUBECONFIG=/var/run/kubernetes/admin.kubeconfig
+- pwd
+- cd ../../../ && mkdir k8s.io && cd k8s.io && git clone https://github.com/mathu97/kubernetes.git
+- pwd
+- cd kubernetes && hack/install-etcd.sh && export $(echo "PATH=$(pwd)/third_party/etcd:${PATH}")
+- ALLOW_PRIVILEGED=1 hack/local-up-cluster.sh &
 # Wait for Kubernetes to be up and ready.
 - JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 4>&1 | grep -q "Ready=True"; do sleep 1; done
 script:
 - make build
-- cd ../../
-- mkdir wongma7
-- cd wongma7
+- cd ../../github.com/
+- pwd
+- mkdir wongma7 && cd wongma7
 - git clone https://github.com/wongma7/csi-certify.git
 - cd csi-certify
-- git checkout refactor
-- go test -v ./cmd/... -ginkgo.v -ginkgo.progress --kubeconfig=$HOME/.kube/config --testdriver=nfs -timeout=0
+- go test -v ./cmd/... -ginkgo.v -ginkgo.progress --kubeconfig=/var/run/kubernetes/admin.kubeconfig --testdriver=nfs -timeout=0
