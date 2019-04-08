@@ -19,7 +19,7 @@ package e2e
 import (
 	. "github.com/onsi/ginkgo"
 	_ "github.com/onsi/gomega"
-	"k8s.io/kubernetes/test/e2e/storage/utils
+	"k8s.io/kubernetes/test/e2e/storage/utils"
 	"path"
 	"k8s.io/kubernetes/test/e2e/framework"
 	"k8s.io/kubernetes/test/e2e/framework/testfiles"
