@@ -2,11 +2,12 @@ package main
 
 import (
 	"flag"
-	"testing"
+	_ "github.com/kubernetes-csi/csi-driver-nfs/test"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"k8s.io/kubernetes/test/e2e/framework"
-		)
+	"testing"
+)
 
 func init() {
 	framework.HandleFlags()

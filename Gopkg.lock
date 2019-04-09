@@ -865,7 +865,8 @@
   revision = "11d55751678de1d864dcd909ed061925eef48bd5"
 
 [[projects]]
-  digest = "1:ed8df62a7a2db25586146293c42a345cec520b5d2e9b1da6b5097b8b32f19310"
+  branch = "master"
+  digest = "1:3b2008af89d04cc885c338c91d4e6855905bd6844d3a31bde140a6cd5313d0fa"
   name = "k8s.io/client-go"
   packages = [
     "discovery",
@@ -1036,8 +1037,7 @@
     "util/workqueue",
   ]
   pruneopts = "NUT"
-  revision = "6ee68ca5fd8355d024d02f9db0b3b667e8357a0f"
-  version = "v11.0.0"
+  revision = "ca8df85b1798c94b0545976f8c87747a112cf41e"
 
 [[projects]]
   branch = "master"
@@ -1406,7 +1406,6 @@
     "k8s.io/api/core/v1",
     "k8s.io/apimachinery/pkg/util/sets",
     "k8s.io/kubernetes/pkg/util/mount",
-    "k8s.io/kubernetes/pkg/volume/util",
     "k8s.io/kubernetes/test/e2e/framework",
     "k8s.io/kubernetes/test/e2e/framework/testfiles",
     "k8s.io/kubernetes/test/e2e/storage/testpatterns",

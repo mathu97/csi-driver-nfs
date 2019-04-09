@@ -15,11 +15,7 @@ type nfsDriver struct {
 	manifests  []string
 }
 
-var NFSdriver func() testsuites.TestDriver
-
-func init() {
-	NFSdriver = InitNFSDriver
-}
+var NFSdriver = InitNFSDriver
 
 type nfsVolume struct {
 	serverIP  string
@@ -48,10 +44,10 @@ func initNFSDriver(name string, manifests ...string) testsuites.TestDriver {
 func InitNFSDriver() testsuites.TestDriver {
 
 	return initNFSDriver("csi-nfsplugin",
-		"nfs/csi-attacher-nfsplugin.yaml",
-		"nfs/csi-attacher-rbac.yaml",
-		"nfs/csi-nodeplugin-nfsplugin.yaml",
-		"nfs/csi-nodeplugin-rbac.yaml")
+		"csi-attacher-nfsplugin.yaml",
+		"csi-attacher-rbac.yaml",
+		"csi-nodeplugin-nfsplugin.yaml",
+		"csi-nodeplugin-rbac.yaml")
 
 }
 

@@ -19,11 +19,11 @@ package test
 import (
 	. "github.com/onsi/ginkgo"
 	_ "github.com/onsi/gomega"
-	"k8s.io/kubernetes/test/e2e/storage/utils"
-	"path"
 	"k8s.io/kubernetes/test/e2e/framework"
 	"k8s.io/kubernetes/test/e2e/framework/testfiles"
 	"k8s.io/kubernetes/test/e2e/storage/testsuites"
+	"k8s.io/kubernetes/test/e2e/storage/utils"
+	"path"
 )
 
 var CSITestSuites = []func() testsuites.TestSuite{
@@ -36,7 +36,7 @@ var CSITestSuites = []func() testsuites.TestSuite{
 
 // This executes testSuites for csi volumes.
 var _ = utils.SIGDescribe("CSI Volumes", func() {
-	testfiles.AddFileSource(testfiles.RootFileSource{Root: path.Join(framework.TestContext.RepoRoot, "./pkg/certify/driver/manifests")})
+	testfiles.AddFileSource(testfiles.RootFileSource{Root: path.Join(framework.TestContext.RepoRoot, "../../deploy/kubernetes/")})
 
 	curDriver := NFSdriver()
 	Context(testsuites.GetDriverNameWithFeatureTags(curDriver), func() {
