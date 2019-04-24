@@ -14,6 +14,7 @@ limitations under the License.
 package test
 
 import (
+	"fmt"
 	. "github.com/onsi/ginkgo"
 	_ "github.com/onsi/gomega"
 	"k8s.io/kubernetes/test/e2e/framework"
@@ -35,9 +36,24 @@ var CSITestSuites = []func() testsuites.TestSuite{
 var _ = utils.SIGDescribe("CSI Volumes", func() {
 	testfiles.AddFileSource(testfiles.RootFileSource{Root: path.Join(framework.TestContext.RepoRoot, "../../deploy/kubernetes/")})
 
+	defaultFramework := framework.NewDefaultFramework("default-framework")
+	driverName := "csi-nfsplugin"
+	manifests := []string{driverName,
+		"csi-attacher-nfsplugin.yaml",
+		"csi-attacher-rbac.yaml",
+		"csi-nodeplugin-nfsplugin.yaml",
+		"csi-nodeplugin-rbac.yaml"}
+	cleanup, err := defaultFramework.CreateFromManifests(nil, manifests...)
+
+	if err != nil {
+		framework.Failf("deploying %s driver: %v", driverName, err)
+	}
+
 	curDriver := NFSdriver()
 	Context(testsuites.GetDriverNameWithFeatureTags(curDriver), func() {
 		testsuites.DefineTestSuite(curDriver, CSITestSuites)
+		By(fmt.Sprintf("uninstalling %s driver", driverName))
+		defer cleanup()
 	})
 
 })
